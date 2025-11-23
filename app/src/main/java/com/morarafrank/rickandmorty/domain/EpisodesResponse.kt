@@ -1,4 +1,4 @@
-package com.morarafrank.rickandmorty.ui.screens
+package com.morarafrank.rickandmorty.domain
 
 data class EpisodesResponse(
     val info: PageInfo,

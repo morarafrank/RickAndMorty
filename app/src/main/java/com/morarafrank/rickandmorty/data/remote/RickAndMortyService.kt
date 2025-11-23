@@ -2,10 +2,10 @@ package com.morarafrank.rickandmorty.data.remote
 
 import com.morarafrank.rickandmorty.domain.CharacterResponse
 import com.morarafrank.rickandmorty.domain.CharactersResponse
-import com.morarafrank.rickandmorty.ui.screens.EpisodeResponse
-import com.morarafrank.rickandmorty.ui.screens.EpisodesResponse
-import com.morarafrank.rickandmorty.ui.screens.LocationResponse
-import com.morarafrank.rickandmorty.ui.screens.LocationsResponse
+import com.morarafrank.rickandmorty.domain.EpisodeResponse
+import com.morarafrank.rickandmorty.domain.EpisodesResponse
+import com.morarafrank.rickandmorty.domain.LocationResponse
+import com.morarafrank.rickandmorty.domain.LocationsResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

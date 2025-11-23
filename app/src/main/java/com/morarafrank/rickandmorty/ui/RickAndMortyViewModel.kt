@@ -5,14 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.morarafrank.rickandmorty.data.repo.RickAndMortyRepository
 import com.morarafrank.rickandmorty.domain.CharacterResponse
-import com.morarafrank.rickandmorty.ui.screens.EpisodeResponse
-import com.morarafrank.rickandmorty.ui.screens.LocationResponse
+import com.morarafrank.rickandmorty.domain.EpisodeResponse
+import com.morarafrank.rickandmorty.domain.LocationResponse
 import com.morarafrank.rickandmorty.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

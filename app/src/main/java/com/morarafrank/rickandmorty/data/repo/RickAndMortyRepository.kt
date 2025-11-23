@@ -3,10 +3,10 @@ package com.morarafrank.rickandmorty.data.repo
 import com.morarafrank.rickandmorty.data.remote.RickAndMortyService
 import com.morarafrank.rickandmorty.domain.CharacterResponse
 import com.morarafrank.rickandmorty.domain.CharactersResponse
-import com.morarafrank.rickandmorty.ui.screens.EpisodeResponse
-import com.morarafrank.rickandmorty.ui.screens.EpisodesResponse
-import com.morarafrank.rickandmorty.ui.screens.LocationResponse
-import com.morarafrank.rickandmorty.ui.screens.LocationsResponse
+import com.morarafrank.rickandmorty.domain.EpisodeResponse
+import com.morarafrank.rickandmorty.domain.EpisodesResponse
+import com.morarafrank.rickandmorty.domain.LocationResponse
+import com.morarafrank.rickandmorty.domain.LocationsResponse
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
