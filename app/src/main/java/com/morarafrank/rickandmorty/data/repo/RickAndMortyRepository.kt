@@ -16,8 +16,11 @@ class RickAndMortyRepository @Inject constructor(
 ){
 
     // --------------------- CHARACTERS ---------------------
-    fun getCharacters(page: Int = 1): Flow<CharactersResponse> = flow {
-        emit(rickAndMortyService.getCharacters(page))
+    fun getCharacters(
+//        page: Int = 1
+    ): Flow<CharactersResponse> = flow {
+        emit(rickAndMortyService
+            .getCharacters())
     }
 
     suspend fun getCharacter(id: Int): CharacterResponse {

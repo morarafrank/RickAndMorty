@@ -7,6 +7,7 @@ import com.morarafrank.rickandmorty.data.repo.RickAndMortyRepository
 import com.morarafrank.rickandmorty.domain.CharacterResponse
 import com.morarafrank.rickandmorty.domain.EpisodeResponse
 import com.morarafrank.rickandmorty.domain.LocationResponse
+import com.morarafrank.rickandmorty.utils.CharactersUiState
 import com.morarafrank.rickandmorty.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,23 +25,29 @@ class RickAndMortyViewModel @Inject constructor(
     private val _characters = MutableStateFlow<Resource<List<CharacterResponse>>>(Resource.Loading())
     val characters: StateFlow<Resource<List<CharacterResponse>>> = _characters
 
+    private val _charactersUiState: MutableStateFlow<CharactersUiState> = MutableStateFlow(CharactersUiState.Idle)
+    val charactersUiState: StateFlow<CharactersUiState> = _charactersUiState
+
     private var currentCharacterPage = 1
 
-    fun loadCharacters(page: Int = 1) {
+    fun loadCharacters() {
         viewModelScope.launch {
             _characters.value = Resource.Loading()
+            _charactersUiState.value = CharactersUiState.Loading
             try {
-                repository.getCharacters(page).collect { response ->
+                repository.getCharacters().collect { response ->
                     _characters.value = Resource.Success(response.results)
+                    _charactersUiState.value = CharactersUiState.Success(response.results)
                 }
-                currentCharacterPage = page
+//                currentCharacterPage = page
             } catch (e: Exception) {
                 _characters.value = Resource.Error(e.localizedMessage ?: "Unknown error")
+                _charactersUiState.value = CharactersUiState.Error(e.localizedMessage ?: "Unknown error" )
             }
         }
     }
 
-    fun loadNextCharacterPage() = loadCharacters(currentCharacterPage + 1)
+//    fun loadNextCharacterPage() = loadCharacters(currentCharacterPage + 1)
 
     fun getCharacterById(id: Int) = flow {
         emit(Resource.Loading<CharacterResponse>())
