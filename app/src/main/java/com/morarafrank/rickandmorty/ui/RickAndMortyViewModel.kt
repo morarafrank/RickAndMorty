@@ -7,14 +7,18 @@ import com.morarafrank.rickandmorty.data.repo.RickAndMortyRepository
 import com.morarafrank.rickandmorty.domain.CharacterResponse
 import com.morarafrank.rickandmorty.domain.EpisodeResponse
 import com.morarafrank.rickandmorty.domain.LocationResponse
+import com.morarafrank.rickandmorty.ui.screens.composables.CharactersUiData
 import com.morarafrank.rickandmorty.utils.CharactersUiState
 import com.morarafrank.rickandmorty.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.collections.emptyList
 
 @HiltViewModel
 class RickAndMortyViewModel @Inject constructor(
@@ -25,6 +29,7 @@ class RickAndMortyViewModel @Inject constructor(
     private val _characters = MutableStateFlow<Resource<List<CharacterResponse>>>(Resource.Loading())
     val characters: StateFlow<Resource<List<CharacterResponse>>> = _characters
 
+    /**
     private val _charactersUiState: MutableStateFlow<CharactersUiState> = MutableStateFlow(CharactersUiState.Idle)
     val charactersUiState: StateFlow<CharactersUiState> = _charactersUiState
 
@@ -45,7 +50,59 @@ class RickAndMortyViewModel @Inject constructor(
                 _charactersUiState.value = CharactersUiState.Error(e.localizedMessage ?: "Unknown error" )
             }
         }
+    }*/
+
+    private var currentPage = 1
+    private var hasNextPage = true
+    private var isLoading = false
+
+    private val _charactersUiState = MutableStateFlow<CharactersUiState>(CharactersUiState.Loading)
+    val charactersUiState = _charactersUiState.asStateFlow()
+
+    fun loadCharacters() {
+        if (isLoading || !hasNextPage) return
+
+        isLoading = true
+
+        viewModelScope.launch {
+            repository.getCharacters(page = currentPage)
+                .catch { e ->
+                    _charactersUiState.value =
+                        CharactersUiState.Error(e.message ?: "Unknown error")
+                    isLoading = false
+                }
+                .collect { response ->
+
+                    currentPage++
+
+                    hasNextPage = response.info.next != null
+
+                    val currentList: List<CharacterResponse> =
+                        if (_charactersUiState.value is CharactersUiState.Success) {
+                            (_charactersUiState.value as CharactersUiState.Success).data.characters
+                        } else {
+                            emptyList()
+                        }
+
+
+                    _charactersUiState.value = CharactersUiState.Success(
+                        CharactersUiData(
+                            characters = currentList + response.results,
+//                            characters = buildList {
+//                                addAll(currentList)
+//                                addAll(response.results)
+//                            },
+                            page = currentPage,
+                            hasNextPage = hasNextPage,
+                            isLoadingMore = false
+                        )
+                    )
+
+                    isLoading = false
+                }
+        }
     }
+
 
 //    fun loadNextCharacterPage() = loadCharacters(currentCharacterPage + 1)
 

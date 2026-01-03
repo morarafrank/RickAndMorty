@@ -1,9 +1,8 @@
 package com.morarafrank.rickandmorty.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,7 +14,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -40,9 +39,25 @@ fun CharactersScreen(
 //    val context = LocalContext.current
     val charactersUiState by rickAndMortyViewModel.charactersUiState.collectAsStateWithLifecycle()
 
+    val gridState = rememberLazyGridState()
+
+
     LaunchedEffect(Unit) {
         rickAndMortyViewModel.loadCharacters()
     }
+
+    LaunchedEffect(gridState) {
+        snapshotFlow {
+            gridState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+        }.collect { lastVisibleIndex ->
+            val totalCount = gridState.layoutInfo.totalItemsCount
+            if (lastVisibleIndex == totalCount - 1) {
+                rickAndMortyViewModel.loadCharacters()
+            }
+        }
+    }
+
+
 
 
     Scaffold(
@@ -51,7 +66,7 @@ fun CharactersScreen(
                 title = {
                     Text(
                         text = stringResource(R.string.app_name),
-                        style = Typography.bodyMedium
+                        style = Typography.bodyLarge
                     )
 
                 },
@@ -90,14 +105,23 @@ fun CharactersScreen(
                 is CharactersUiState.Success -> {
 
                     val characters = (charactersUiState as CharactersUiState.Success).data
+//
+//                    CharactersUi(
+//                        modifier = modifier.padding(it),
+//                        characters = characters,
+//                        navigateToCharacter = {
+////                            rickAndMortyViewModel.onCharacterSelected(it)
+//                        }
+//                    )
 
                     CharactersUi(
-                        modifier = modifier.padding(it),
+                        modifier = modifier
+                            .padding(it),
                         characters = characters,
-                        navigateToCharacter = {
-//                            rickAndMortyViewModel.onCharacterSelected(it)
-                        }
+                        listState = gridState,
+                        navigateToCharacter = { }
                     )
+
                 }
                 is CharactersUiState.Error -> {
                     val errorMessage = (charactersUiState as CharactersUiState.Error).message
