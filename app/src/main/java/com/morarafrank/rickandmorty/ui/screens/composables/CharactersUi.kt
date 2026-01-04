@@ -50,7 +50,8 @@ fun CharactersUi(
     modifier: Modifier = Modifier,
     characters: CharactersUiData,
     listState: LazyGridState,
-    navigateToCharacter: (id: Int) -> Unit
+    navigateToCharacter: (id: Int) -> Unit,
+    searchText: String
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -62,7 +63,9 @@ fun CharactersUi(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
 
-        items(characters.characters) { character ->
+        items(characters.characters.filter {
+            it.name.contains(searchText, ignoreCase = true)
+        }) { character ->
             SingleCharacterCard(
                 character = character,
                 onClick = {
