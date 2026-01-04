@@ -30,16 +30,15 @@ import com.morarafrank.rickandmorty.ui.theme.Typography
 @Composable
 fun SingleCharacterCard(
     character: CharacterResponse,
-    onClick: () -> Unit
+    onClick: (id: Int) -> Unit
 
 ) {
     Card(modifier = Modifier
 //        .fillMaxWidth()
 //        .height(120.dp)
         .size(150.dp)
-        .clickable { onClick() }
-        .padding(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp),
-
+        .padding(start = 8.dp, end = 8.dp, top = 4.dp, bottom = 4.dp)
+        .clickable { onClick(character.id) },
         ) {
 
         Column (
@@ -63,11 +62,13 @@ fun SingleCharacterCard(
                 modifier = Modifier
                     .size(100.dp)
                     .clip(RoundedCornerShape(8.dp))
+                    .padding(4.dp)
             )
 
             Text(
                 text = character.name,
-                style = Typography.bodyMedium
+                style = Typography.bodyMedium,
+//                modifier = Modifier.padding(4.dp),
             )
         }
     }

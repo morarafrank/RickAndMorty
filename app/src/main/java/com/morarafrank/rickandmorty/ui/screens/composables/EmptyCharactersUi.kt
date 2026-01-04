@@ -2,6 +2,7 @@ package com.morarafrank.rickandmorty.ui.screens.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -27,7 +28,7 @@ fun EmptyCharactersUi(
 ) {
     Column(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
@@ -39,7 +40,7 @@ fun EmptyCharactersUi(
         LottieAnimation(
             composition = composition,
             modifier = Modifier
-                .size(150.dp),
+                .size(100.dp),
             iterations = Int.MAX_VALUE,
         )
 

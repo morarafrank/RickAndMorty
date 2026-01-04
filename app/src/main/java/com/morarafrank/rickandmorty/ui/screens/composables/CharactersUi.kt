@@ -50,7 +50,7 @@ fun CharactersUi(
     modifier: Modifier = Modifier,
     characters: CharactersUiData,
     listState: LazyGridState,
-    navigateToCharacter: (Character) -> Unit
+    navigateToCharacter: (id: Int) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -66,7 +66,7 @@ fun CharactersUi(
             SingleCharacterCard(
                 character = character,
                 onClick = {
-//                    navigateToCharacter(character)
+                    navigateToCharacter(character.id)
                 }
             )
         }

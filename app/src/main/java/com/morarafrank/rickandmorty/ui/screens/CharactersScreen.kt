@@ -30,13 +30,12 @@ import com.morarafrank.rickandmorty.utils.CharactersUiState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-//@Preview(showBackground = true)
 fun CharactersScreen(
     modifier: Modifier = Modifier,
-    rickAndMortyViewModel: RickAndMortyViewModel = hiltViewModel()
+    rickAndMortyViewModel: RickAndMortyViewModel = hiltViewModel(),
+    navigateToCharacter: (id: Int) -> Unit
 ) {
 
-//    val context = LocalContext.current
     val charactersUiState by rickAndMortyViewModel.charactersUiState.collectAsStateWithLifecycle()
 
     val gridState = rememberLazyGridState()
@@ -56,9 +55,6 @@ fun CharactersScreen(
             }
         }
     }
-
-
-
 
     Scaffold(
         topBar = {
@@ -97,7 +93,7 @@ fun CharactersScreen(
                 is CharactersUiState.Loading -> {
                     LoadingCharactersUi(
                         modifier = modifier.padding(it),
-                        size = 100.dp,
+                        size = 150.dp,
                         title = "Loading Characters...",
                         animation = R.raw.loading_anim0
                     )
@@ -105,21 +101,15 @@ fun CharactersScreen(
                 is CharactersUiState.Success -> {
 
                     val characters = (charactersUiState as CharactersUiState.Success).data
-//
-//                    CharactersUi(
-//                        modifier = modifier.padding(it),
-//                        characters = characters,
-//                        navigateToCharacter = {
-////                            rickAndMortyViewModel.onCharacterSelected(it)
-//                        }
-//                    )
 
                     CharactersUi(
                         modifier = modifier
                             .padding(it),
                         characters = characters,
                         listState = gridState,
-                        navigateToCharacter = { }
+                        navigateToCharacter = { characterId ->
+                            navigateToCharacter(characterId)
+                        }
                     )
 
                 }

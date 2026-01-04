@@ -10,3 +10,9 @@ sealed class CharactersUiState {
     data class Success(val data: CharactersUiData) : CharactersUiState()
     data class Error(val message: String) : CharactersUiState()
 }
+
+sealed class CharacterUiState {
+    object Loading : CharacterUiState()
+    data class Success(val character: CharacterResponse) : CharacterUiState()
+    data class Error(val message: String) : CharacterUiState()
+}

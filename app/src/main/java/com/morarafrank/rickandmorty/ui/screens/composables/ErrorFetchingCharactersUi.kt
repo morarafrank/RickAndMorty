@@ -3,10 +3,12 @@ package com.morarafrank.rickandmorty.ui.screens.composables
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,29 +20,46 @@ import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.morarafrank.rickandmorty.R
 import com.morarafrank.rickandmorty.ui.theme.Typography
 
-
 @Composable
-fun IdleCharactersUi(modifier: Modifier = Modifier) {
-
+fun ErrorUi(
+    modifier: Modifier = Modifier,
+    errorMessage: String,
+    onRetry: () -> Unit
+) {
     Column(
         modifier = modifier
-            .fillMaxWidth()
+            .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement
-            .spacedBy(12.dp, Alignment.CenterVertically)
+        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
     ) {
 
-        Text(
-            text = "Welcome to the RickAndMorty App",
-            style = Typography.bodyLarge
+        val composition by rememberLottieComposition(
+            spec = LottieCompositionSpec.RawRes(R.raw.error)
         )
-        Text(
-            text = "Search for Rick and Morty characters to get started",
-            style = Typography.bodyMedium
+        LottieAnimation(
+            composition = composition,
+            modifier = Modifier
+                .size(150.dp),
+            iterations = Int.MAX_VALUE,
         )
 
+        Text(
+            text = errorMessage,
+            style = Typography.bodyMedium,
+            color = MaterialTheme.colorScheme.error
+        )
+
+        Button(
+            onClick = onRetry,
+        ) {
+            Text(
+                text = "Retry",
+                style = Typography.bodySmall
+            )
+        }
     }
 }

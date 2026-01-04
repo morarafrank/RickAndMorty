@@ -8,6 +8,7 @@ import com.morarafrank.rickandmorty.domain.CharacterResponse
 import com.morarafrank.rickandmorty.domain.EpisodeResponse
 import com.morarafrank.rickandmorty.domain.LocationResponse
 import com.morarafrank.rickandmorty.ui.screens.composables.CharactersUiData
+import com.morarafrank.rickandmorty.utils.CharacterUiState
 import com.morarafrank.rickandmorty.utils.CharactersUiState
 import com.morarafrank.rickandmorty.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -104,17 +105,26 @@ class RickAndMortyViewModel @Inject constructor(
     }
 
 
-//    fun loadNextCharacterPage() = loadCharacters(currentCharacterPage + 1)
+    private val _characterUiState =
+        MutableStateFlow<CharacterUiState>(CharacterUiState.Loading)
+    val characterUiState: StateFlow<CharacterUiState> = _characterUiState
 
-    fun getCharacterById(id: Int) = flow {
-        emit(Resource.Loading<CharacterResponse>())
-        try {
-            val character = repository.getCharacter(id)
-            emit(Resource.Success(character))
-        } catch (e: Exception) {
-            emit(Resource.Error<CharacterResponse>(e.localizedMessage ?: "Unknown error"))
+    fun loadCharacter(id: Int) {
+        _characterUiState.value = CharacterUiState.Loading
+
+        viewModelScope.launch {
+            try {
+                val character = repository.getCharacter(id)
+                _characterUiState.value = CharacterUiState.Success(character)
+            } catch (e: Exception) {
+                _characterUiState.value =
+                    CharacterUiState.Error(e.message ?: "Failed to load character")
+            }
         }
     }
+
+
+//    fun loadNextCharacterPage() = loadCharacters(currentCharacterPage + 1)
 
     fun getMultipleCharactersByIds(ids: List<Int>) = flow {
         emit(Resource.Loading<List<CharacterResponse>>())
