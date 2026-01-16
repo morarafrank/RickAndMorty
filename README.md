@@ -17,14 +17,17 @@ A simple Android application that allows users to search for **Rick and Morty** 
 - 📱 Modern, clean UI with Jetpack Compose  
 - ⚡ Fast and responsive performance  
 
+## 📸 Screenshots
+
+<p align="center">
+  <img src="screenshots/rick1.jpeg" width="180" />
+  <img src="screenshots/rick0.jpeg" width="180" />
+  <img src="screenshots/rick2.jpeg" width="180" />
+  <img src="screenshots/rick3.jpeg" width="180" />
+</p>
+
 ---
 
-## 📸 Screenshots
-![rick1.jpeg](screenshots/rick1.jpeg)
-![rick0.jpeg](screenshots/rick0.jpeg)
-![rick2.jpeg](screenshots/rick2.jpeg)
-![rick3.jpeg](screenshots/rick3.jpeg)
----
 
 ## 🛠 Tech Stack
 
