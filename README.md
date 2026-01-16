@@ -54,7 +54,7 @@ No API key is required.
 1. Clone the repository:
    ```bash
    git clone https://github.com/morarafrank/RickAndMorty.git
-````
+
 
 2. Open the project in **Android Studio**
 
