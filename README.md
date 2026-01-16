@@ -24,7 +24,6 @@ A simple Android application that allows users to search for **Rick and Morty** 
   <img src="screenshots/rick1.jpeg" width="180" />
   <img src="screenshots/rick2.jpeg" width="180" />
   <img src="screenshots/rick3.jpeg" width="180" />
-  <img src="screenshots/rick4.jpeg" width="180" />
 </p>
 
 ---
